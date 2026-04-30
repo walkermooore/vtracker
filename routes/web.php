@@ -3,6 +3,7 @@
 use App\Livewire\VulnerabilityManager;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\AssetManager;
+use App\Livewire\VulnerabilityDetail;
 
 Route::view('/', 'welcome');
 
@@ -21,5 +22,9 @@ Route::get('/assets', AssetManager::class)
 Route::get('/vulnerabilities', VulnerabilityManager::class)
     ->middleware(['auth', 'verified'])
     ->name('vulnerabilities.index');
+
+Route::get('/vulnerabilities/{id}', VulnerabilityDetail::class)
+    ->middleware(['auth', 'verified'])
+    ->name('vulnerabilities.show');
 
 require __DIR__.'/auth.php';
