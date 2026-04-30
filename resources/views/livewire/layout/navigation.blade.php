@@ -43,6 +43,11 @@ new class extends Component
                     <x-nav-link :href="route('vulnerabilities.index')" :active="request()->routeIs('vulnerabilities.index')" wire:navigate>
                         {{ __('Vulnerabilidades') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('audit.index')" :active="request()->routeIs('audit.index')" wire:navigate>
+                    {{ __('Log de Auditoria') }}
+                    </x-nav-link>
+
                 </div>
             </div> <!-- FIM DO LADO ESQUERDO (Esta era a div que estava faltando fechar!) -->
 
