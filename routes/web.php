@@ -4,10 +4,11 @@ use App\Livewire\VulnerabilityManager;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\AssetManager;
 use App\Livewire\VulnerabilityDetail;
+use App\Http\Controllers\DashboardController;
 
 Route::view('/', 'welcome');
 
-Route::view('dashboard', 'dashboard')
+Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
