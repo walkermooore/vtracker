@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Livewire\AssetManager;
 use App\Livewire\VulnerabilityDetail;
 use App\Http\Controllers\DashboardController;
+use App\Livewire\AuditLog;
 
 Route::view('/', 'welcome');
 
@@ -27,5 +28,9 @@ Route::get('/vulnerabilities', VulnerabilityManager::class)
 Route::get('/vulnerabilities/{id}', VulnerabilityDetail::class)
     ->middleware(['auth', 'verified'])
     ->name('vulnerabilities.show');
+
+Route::get('/audit', AuditLog::class)
+    ->middleware(['auth'])
+    ->name('audit.index');
 
 require __DIR__.'/auth.php';
