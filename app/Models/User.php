@@ -26,13 +26,14 @@ class User extends Authenticatable
         ];
     }
 
-    // 1. Relacionamento: Um usuário reporta várias vulnerabilidades
+    // Relacionamento 1:N -> Um usuário (Analista) pode reportar MÚLTIPLAS vulnerabilidades.
+    // Passo a chave estrangeira 'reporter_id' pois ela foge da convenção padrão 'user_id' do Eloquent.
     public function reportedVulnerabilities(): HasMany
     {
         return $this->hasMany(Vulnerability::class, 'reporter_id');
     }
 
-    // 2. Relacionamento: Um usuário cria vários logs de auditoria
+    // Relacionamento 1:N -> Um usuário pode gerar múltiplos logs (interações, comentários) no sistema.
     public function logs(): HasMany
     {
         return $this->hasMany(VulnerabilityLog::class);
