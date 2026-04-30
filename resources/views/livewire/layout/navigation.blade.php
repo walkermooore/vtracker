@@ -20,6 +20,8 @@ new class extends Component
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
+
+            <!-- LADO ESQUERDO: Logo e Links -->
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
@@ -28,19 +30,23 @@ new class extends Component
                     </a>
                 </div>
 
-                <!-- Navigation Links -->
+                <!-- Navigation Links (TODOS OS LINKS DEVEM FICAR AQUI DENTRO) -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <!-- Link para os Ativos -->
                     <x-nav-link :href="route('assets.index')" :active="request()->routeIs('assets.index')" wire:navigate>
                         {{ __('Ativos') }}
                     </x-nav-link>
-                </div>
 
-            <!-- Settings Dropdown -->
+                    <x-nav-link :href="route('vulnerabilities.index')" :active="request()->routeIs('vulnerabilities.index')" wire:navigate>
+                        {{ __('Vulnerabilidades') }}
+                    </x-nav-link>
+                </div>
+            </div> <!-- FIM DO LADO ESQUERDO (Esta era a div que estava faltando fechar!) -->
+
+            <!-- LADO DIREITO: Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
@@ -70,7 +76,7 @@ new class extends Component
                 </x-dropdown>
             </div>
 
-            <!-- Hamburger -->
+            <!-- Hamburger (Menu Mobile) -->
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -82,11 +88,20 @@ new class extends Component
         </div>
     </div>
 
-    <!-- Responsive Navigation Menu -->
+    <!-- Responsive Navigation Menu (Exibido no Celular) -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+
+            <!-- Adicionei os links no mobile também -->
+            <x-responsive-nav-link :href="route('assets.index')" :active="request()->routeIs('assets.index')" wire:navigate>
+                {{ __('Ativos') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('vulnerabilities.index')" :active="request()->routeIs('vulnerabilities.index')" wire:navigate>
+                {{ __('Vulnerabilidades') }}
             </x-responsive-nav-link>
         </div>
 
@@ -110,6 +125,5 @@ new class extends Component
                 </button>
             </div>
         </div>
-    </div>
     </div>
 </nav>
