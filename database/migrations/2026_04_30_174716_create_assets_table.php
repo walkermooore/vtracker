@@ -6,20 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
+        // Aqui eu defino a tabela de 'Assets' (Ativos).
+        // Um ativo é basicamente o sistema, API ou infraestrutura onde o pentest foi realizado.
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
+            $table->string('name'); // Nome do projeto/sistema testado
+            $table->string('url_or_ip')->nullable(); // Onde a aplicação está hospedada (útil para o time de Blue Team mapear)
+            $table->text('description')->nullable(); // Contexto sobre as tecnologias usadas no ativo
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('assets');
