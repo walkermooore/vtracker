@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: docker/Dockerfile
+        container_name: pgv_app
+        volumes:
+            - ./:/var/www
+        working_dir: /var/www
+        depends_on:
+            - db
+        networks:
+            - pgv_net
+
+    nginx:
+        image: nginx:alpine
+        container_name: pgv_nginx
+        ports:
+            - "8000:80"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - app
+        networks:
+            - pgv_net
+
+    db:
+        image: postgres:16
+        container_name: pgv_db
+        restart: always
+        environment:
+            POSTGRES_DB: pgv
+            POSTGRES_USER: pgv_user
+            POSTGRES_PASSWORD: 5J2425kGv3&1
+#        ports:
+#            - "5432:5432"
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        networks:
+            - pgv_net
+
+volumes:
+    pgdata:
+
+networks:
+    pgv_net:
