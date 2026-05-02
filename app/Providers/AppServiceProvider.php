@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Models\Vulnerability;
+use App\Observers\VulnerabilityObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Vulnerability::observe(VulnerabilityObserver::class);
     }
 }
