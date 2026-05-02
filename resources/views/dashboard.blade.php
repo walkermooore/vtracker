@@ -1,69 +1,112 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Painel de Controle de Segurança') }}
+            {{ __('Dashboard de Segurança') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-            <!-- Cards de Estatísticas -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div class="bg-white p-6 rounded-lg shadow border-l-4 border-blue-500">
-                    <p class="text-sm text-gray-500 uppercase font-bold">Total de Ativos</p>
-                    <p class="text-2xl font-black text-gray-800">{{ $stats['total_assets'] }}</p>
+            <!-- Grid de Cards de Estatísticas -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 border-l-4 border-blue-500">
+                    <div class="text-sm text-gray-500 uppercase font-bold">Total de Ativos</div>
+                    <div class="text-3xl font-bold">{{ $stats['total_assets'] }}</div>
                 </div>
 
-                <div class="bg-white p-6 rounded-lg shadow border-l-4 border-indigo-500">
-                    <p class="text-sm text-gray-500 uppercase font-bold">Vulnerabilidades</p>
-                    <p class="text-2xl font-black text-gray-800">{{ $stats['total_vulns'] }}</p>
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 border-l-4 border-indigo-500">
+                    <div class="text-sm text-gray-500 uppercase font-bold">Vulnerabilidades</div>
+                    <div class="text-3xl font-bold">{{ $stats['total_vulns'] }}</div>
                 </div>
 
-                <div class="bg-white p-6 rounded-lg shadow border-l-4 border-red-500">
-                    <p class="text-sm text-gray-500 uppercase font-bold">Críticas Ativas</p>
-                    <p class="text-2xl font-black text-red-600">{{ $stats['critical_vulns'] }}</p>
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 border-l-4 border-red-600">
+                    <div class="text-sm text-gray-500 uppercase font-bold">Críticas</div>
+                    <div class="text-3xl font-bold text-red-600">{{ $stats['critical_vulns'] }}</div>
                 </div>
 
-                <div class="bg-white p-6 rounded-lg shadow border-l-4 border-green-500">
-                    <p class="text-sm text-gray-500 uppercase font-bold">Resolvidas</p>
-                    <p class="text-2xl font-black text-green-600">{{ $stats['resolved_vulns'] }}</p>
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 border-l-4 border-green-500">
+                    <div class="text-sm text-gray-500 uppercase font-bold">Resolvidas</div>
+                    <div class="text-3xl font-bold text-green-600">{{ $stats['resolved_vulns'] }}</div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Alertas de Riscos Críticos -->
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="font-bold text-lg mb-4 text-red-700">Atenção Crítica Necessária</h3>
-                    <div class="space-y-3">
-                        @forelse($pending_critical as $vuln)
-                            <div class="flex justify-between items-center p-3 bg-red-50 rounded border border-red-100">
-                                <div>
-                                    <p class="font-bold text-red-900">{{ $vuln->title }}</p>
-                                    <p class="text-xs text-red-700">Ativo: {{ $vuln->asset->name }}</p>
-                                </div>
-                                <a href="{{ route('vulnerabilities.show', $vuln->id) }}" class="text-xs bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700">Ver Falha</a>
-                            </div>
-                        @empty
-                            <p class="text-gray-500 text-sm">Nenhum risco crítico pendente no momento.</p>
-                        @endforelse
-                    </div>
-                </div>
+            <!-- Seção do Gráfico -->
+            <div class="grid grid-cols-1 gap-6">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                    <h3 class="font-bold text-lg mb-6 text-gray-700 border-b pb-2">Distribuição de Riscos por Severidade</h3>
 
-                <!-- Últimos Ativos Cadastrados -->
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="font-bold text-lg mb-4 text-gray-700">Ativos Adicionados Recentemente</h3>
-                    <ul class="divide-y divide-gray-100">
-                        @foreach($recent_assets as $asset)
-                            <li class="py-3 flex justify-between">
-                                <span class="text-sm font-medium text-gray-900">{{ $asset->name }}</span>
-                                <span class="text-xs text-gray-500">{{ $asset->created_at->diffForHumans() }}</span>
-                            </li>
-                        @endforeach
-                    </ul>
+                    <div class="relative" style="height: 350px;">
+                        <canvas id="severityChart"></canvas>
+                    </div>
                 </div>
             </div>
 
         </div>
     </div>
+
+    <!-- Script do Gráfico -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('severityChart').getContext('2d');
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Baixa', 'Média', 'Alta', 'Crítica'],
+                    datasets: [{
+                        label: 'Quantidade de Falhas',
+                        data: [
+                            {{ $chartData['Low'] }},
+                            {{ $chartData['Medium'] }},
+                            {{ $chartData['High'] }},
+                            {{ $chartData['Critical'] }}
+                        ],
+                        backgroundColor: [
+                            '#10b981', // Emerald 500 (Low)
+                            '#f59e0b', // Amber 500 (Medium)
+                            '#ef4444', // Red 500 (High)
+                            '#7f1d1d'  // Red 900 (Critical)
+                        ],
+                        borderRadius: 6,
+                        maxBarThickness: 100
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false // Esconde a legenda pois os eixos já explicam
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                                color: '#6b7280'
+                            },
+                            grid: {
+                                display: true,
+                                drawBorder: false,
+                                color: '#f3f4f6'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#374151',
+                                font: {
+                                    weight: 'bold'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 </x-app-layout>
