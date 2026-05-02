@@ -1,11 +1,13 @@
 <?php
 
-use App\Livewire\VulnerabilityManager;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\VulnerabilityManager;
 use App\Livewire\AssetManager;
 use App\Livewire\VulnerabilityDetail;
 use App\Http\Controllers\DashboardController;
 use App\Livewire\AuditLog;
+use App\Livewire\VulnerabilityList;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 Route::view('/', 'welcome');
 
@@ -21,16 +23,31 @@ Route::get('/assets', AssetManager::class)
     ->middleware(['auth', 'verified'])
     ->name('assets.index');
 
-Route::get('/vulnerabilities', VulnerabilityManager::class)
+Route::get('/audit', AuditLog::class)
+    ->middleware(['auth'])
+    ->name('audit.index');
+
+// ==========================================
+// GRUPO DE ROTAS DE VULNERABILIDADES
+// ==========================================
+
+Route::get('/vulnerabilities', VulnerabilityList::class)
     ->middleware(['auth', 'verified'])
     ->name('vulnerabilities.index');
+
+Route::get('/vulnerabilities/create', VulnerabilityManager::class)
+    ->middleware(['auth', 'verified'])
+    ->name('vulnerabilities.create');
 
 Route::get('/vulnerabilities/{id}', VulnerabilityDetail::class)
     ->middleware(['auth', 'verified'])
     ->name('vulnerabilities.show');
 
-Route::get('/audit', AuditLog::class)
-    ->middleware(['auth'])
-    ->name('audit.index');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/vulnerabilities/{vulnerability}/pdf', function (App\Models\Vulnerability $vulnerability) {
+        $pdf = Pdf::loadView('reports.vulnerability-pdf', compact('vulnerability'));
+        return $pdf->download("relatorio-vulnerabilidade-{$vulnerability->id}.pdf");
+    })->name('vulnerabilities.pdf');
+});
 
 require __DIR__.'/auth.php';
