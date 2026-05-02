@@ -10,26 +10,26 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Contagens básicas para os cards de destaque
-        $stats = [
-            'total_assets' => Asset::count(),
-            'total_vulns' => Vulnerability::count(),
-            // Conto apenas as críticas para dar o alerta visual no dashboard
-            'critical_vulns' => Vulnerability::where('severity', 'critical')->count(),
-            // Calculo a taxa de resolução para mostrar eficiência do Blue Team
-            'resolved_vulns' => Vulnerability::where('status', 'resolved')->count(),
+
+        $severityCounts = \App\Models\Vulnerability::select('severity', \DB::raw('count(*) as total'))
+            ->groupBy('severity')
+            ->pluck('total', 'severity')
+            ->all();
+
+        $chartData = [
+            'Low'      => $severityCounts['low'] ?? 0,
+            'Medium'   => $severityCounts['medium'] ?? 0,
+            'High'     => $severityCounts['high'] ?? 0,
+            'Critical' => $severityCounts['critical'] ?? 0,
         ];
 
-        // Pego os últimos 5 ativos cadastrados para a lista rápida
-        $recent_assets = Asset::latest()->take(5)->get();
+        $stats = [
+            'total_assets'   => \App\Models\Asset::count(),
+            'total_vulns'    => \App\Models\Vulnerability::count(),
+            'critical_vulns' => $chartData['Critical'],
+            'resolved_vulns' => \App\Models\Vulnerability::where('status', 'resolved')->count(),
+        ];
 
-        // Pego as vulnerabilidades críticas que ainda estão abertas
-        $pending_critical = Vulnerability::with('asset')
-            ->where('severity', 'critical')
-            ->where('status', '!=', 'resolved')
-            ->latest()
-            ->get();
-
-        return view('dashboard', compact('stats', 'recent_assets', 'pending_critical'));
+        return view('dashboard', compact('stats', 'chartData'));
     }
 }
