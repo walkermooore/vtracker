@@ -48,6 +48,15 @@ services:
         networks:
             - pgv_net
 
+    mailpit:
+        image: 'axllent/mailpit:latest'
+        container_name: pgv_mailpit
+        ports:
+            - "1025:1025"
+            - "8025:8025"
+        networks:
+            - pgv_net
+
 volumes:
     pgdata:
 
