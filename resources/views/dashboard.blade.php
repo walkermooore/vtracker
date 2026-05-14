@@ -1,14 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight font-mono uppercase">
             {{ __('Dashboard de Segurança') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 border-l-4 border-blue-500">
                     <div class="text-sm text-gray-500 uppercase font-bold">Total de Ativos</div>
                     <div class="text-3xl font-bold">{{ $stats['total_assets'] ?? 1 }}</div>
@@ -31,13 +31,12 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 border border-gray-200">
                     <h3 class="font-bold text-lg mb-6 text-gray-700 border-b pb-2">Distribuição de Riscos por Severidade</h3>
                     <div id="severityChart" style="min-height: 350px;"></div>
                 </div>
 
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 border border-gray-200">
                     <h3 class="font-bold text-lg mb-6 text-gray-700 border-b pb-2">Ativos com Maior Exposição (Críticas)</h3>
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
@@ -50,7 +49,7 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                             @isset($topAssets)
                                 @forelse($topAssets as $asset)
-                                    <tr>
+                                    <tr class="hover:bg-gray-50 transition-colors">
                                         <td class="px-4 py-4 whitespace-nowrap text-sm">
                                             <div class="font-bold text-gray-900">{{ $asset->name }}</div>
                                             <div class="text-gray-500 text-xs">{{ $asset->url_or_ip }}</div>
@@ -75,16 +74,21 @@
                         </table>
                     </div>
                 </div>
+            </div>
 
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200 p-6">
+                <h3 class="font-bold text-lg mb-6 text-gray-700 border-b pb-2">Log de Auditoria de Segurança</h3>
+                <livewire:audit-log-viewer />
             </div>
 
         </div>
     </div>
 
     @push('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts" data-navigate-once></script>
+
         <script>
             document.addEventListener('livewire:navigated', function () {
-                // Verifica se o gráfico já existe para não duplicar na navegação SPA
                 if (window.severityChartInstance) {
                     window.severityChartInstance.destroy();
                 }
