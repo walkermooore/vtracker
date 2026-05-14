@@ -33,6 +33,7 @@
 
 @livewireScripts
 @stack('scripts')
+@persist('widget-vlibras')
 <div vw class="enabled">
     <div vw-access-button class="active"></div>
     <div vw-plugin-wrapper>
@@ -43,5 +44,9 @@
 <script>
     new window.VLibras.Widget('https://vlibras.gov.br/app');
 </script>
+@endpersist
+
+</body>
+</html>
 </body>
 </html>
