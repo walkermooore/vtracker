@@ -14,7 +14,6 @@ it('displays the list of assets to authenticated users', function () {
         'name' => 'Firewall Corporativo',
         'url_or_ip' => '192.168.1.1'
     ]);
-
     // Simula o usuário logando e acessando a rota de ativos
     $response = $this->actingAs($user)
         ->get('/assets');

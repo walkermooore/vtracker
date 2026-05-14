@@ -9,7 +9,9 @@ use App\Livewire\AuditLog;
 use App\Livewire\VulnerabilityList;
 use Barryvdh\DomPDF\Facade\Pdf;
 
-Route::view('/', 'welcome');
+Route::get('/', function () {
+    return redirect()->route('dashboard');
+})->middleware(['auth']);
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
