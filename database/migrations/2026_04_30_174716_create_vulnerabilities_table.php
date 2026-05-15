@@ -11,9 +11,11 @@ return new class extends Migration
         Schema::create('vulnerabilities', function (Blueprint $table) {
             $table->id();
             $table->foreignId('asset_id')->constrained('assets')->cascadeOnDelete();
+            $table->foreignId('reporter_id')->constrained('users')->cascadeOnDelete();
             $table->string('title');
             $table->text('description');
             $table->decimal('cvss_score', 4, 2);
+            $table->string('severity')->default('low');
             $table->string('status')->default('Aberta');
             $table->timestamps();
         });

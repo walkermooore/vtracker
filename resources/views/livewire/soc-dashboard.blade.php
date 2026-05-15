@@ -1,6 +1,6 @@
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
     <!-- Total Assets Card -->
-    <div class="bg-gray-800 border border-gray-700 rounded-lg p-6 shadow-sm">
+    <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-xs font-mono uppercase tracking-widest text-gray-400">Inventory Status</h3>
             <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -8,13 +8,13 @@
             </svg>
         </div>
         <div class="flex items-baseline">
-            <span class="text-4xl font-mono font-bold text-white">{{ $totalAssets }}</span>
+            <span class="text-4xl font-mono font-bold text-gray-900">{{ $totalAssets }}</span>
             <span class="ml-2 text-xs font-mono text-emerald-500">TOTAL ASSETS</span>
         </div>
     </div>
 
     <!-- Critical Vulnerabilities Card -->
-    <div class="bg-gray-800 border border-red-900/50 rounded-lg p-6 shadow-sm relative overflow-hidden">
+    <div class="bg-white border border-red-200 rounded-lg p-6 shadow-sm relative overflow-hidden">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-xs font-mono uppercase tracking-widest text-gray-400">Risk Exposure</h3>
             <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -22,14 +22,14 @@
             </svg>
         </div>
         <div class="flex items-baseline">
-            <span class="text-4xl font-mono font-bold text-red-500">{{ $openCriticalVulns }}</span>
+            <span class="text-4xl font-mono font-bold text-red-600">{{ $openCriticalVulns }}</span>
             <span class="ml-2 text-xs font-mono text-red-400">CRITICAL VULNS</span>
         </div>
         <div class="absolute bottom-0 right-0 w-16 h-16 bg-red-500/5 -mb-4 -mr-4 rounded-full"></div>
     </div>
 
     <!-- Compromised Assets Card -->
-    <div class="bg-gray-800 border border-gray-700 rounded-lg p-6 shadow-sm">
+    <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-xs font-mono uppercase tracking-widest text-gray-400">Impact Assessment</h3>
             <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -37,7 +37,7 @@
             </svg>
         </div>
         <div class="flex items-baseline">
-            <span class="text-4xl font-mono font-bold text-white">{{ $compromisedAssets }}</span>
+            <span class="text-4xl font-mono font-bold text-gray-900">{{ $compromisedAssets }}</span>
             <span class="ml-2 text-xs font-mono text-orange-500">ASSETS AT RISK</span>
         </div>
     </div>
