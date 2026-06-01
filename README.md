@@ -1,6 +1,8 @@
 # VulnTracker 🛡️
 ### Cybersecurity Asset & Vulnerability Management System
 
+![Status](https://img.shields.io/badge/status-active-success)
+![License](https://img.shields.io/badge/license-MIT-green)
 ![Laravel](https://img.shields.io/badge/Laravel-13.x-FF2D20?style=for-the-badge&logo=laravel)
 ![Livewire](https://img.shields.io/badge/Livewire-3.x-4e73df?style=for-the-badge&logo=livewire)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-3.x-38B2AC?style=for-the-badge&logo=tailwind-css)
@@ -17,6 +19,82 @@ O **VulnTracker** é uma plataforma robusta e profissional desenvolvida para equ
 
 ---
 
+## 🎯 Why VulnTracker?
+
+Many organizations still manage vulnerabilities using spreadsheets and disconnected tools.
+
+VulnTracker centralizes asset inventory, vulnerability management, audit trails and reporting into a single platform designed for security teams. It shows that you understand the business problem, not just the technology.
+
+---
+
+## 📸 Screenshots
+
+### Dashboard SOC
+![Dashboard](docs/images/dashboard.png)
+
+### Vulnerability Management
+![Vulnerabilities](docs/images/vulnerabilities.png)
+
+### Asset Inventory
+![Assets](docs/images/assets.png)
+
+---
+
+## 🏗️ Architecture / Arquitetura
+
+```mermaid
+graph TD
+    User((User)) --> Web[Web Interface - Livewire]
+    Web --> App[Laravel Application]
+    App --> DB[(PostgreSQL)]
+    App --> Cache[(Redis/File)]
+    App --> Storage[Local/S3 - PoC Images]
+    App --> Reports[DomPDF - PDF Generation]
+```
+
+---
+
+## 📊 Data Model / Modelo de Dados
+
+```
+Asset
+ └── Vulnerability
+       └── Evidence
+       └── Audit Log
+```
+
+---
+
+## 🔄 Vulnerability Workflow
+
+```
+Open
+ ↓
+Triaged
+ ↓
+In Progress
+ ↓
+Mitigated
+ ↓
+Verified
+ ↓
+Closed
+```
+
+---
+
+## 🔒 Security Features
+
+- **CSRF Protection**: All state-changing requests are protected.
+- **Authentication**: Secure access via Laravel Sanctum/Fortify.
+- **Role-Based Access Control (RBAC)**: Fine-grained permissions for analysts and admins.
+- **Password Hashing**: Industry-standard Bcrypt hashing.
+- **Audit Logging**: Immutable records of all system activities.
+- **Input Validation**: Strict validation for all user-provided data.
+- **SQL Injection Protection**: Guaranteed by Laravel's Eloquent ORM.
+
+---
+
 ## 🚀 Funcionalidades Principais / Key Features
 
 - **🛡️ Asset Management**: Gestão completa de inventário de TI (IPs, URLs, Servidores).
@@ -26,6 +104,18 @@ O **VulnTracker** é uma plataforma robusta e profissional desenvolvida para equ
 - **📜 Audit Trail**: Logs de auditoria imutáveis capturando todas as ações de analistas.
 - **📧 Critical Alerts**: Sistema de notificações por e-mail para vulnerabilidades de alta criticidade.
 - **⚖️ CVSS Scoring**: Cálculo integrado de severidade baseado no padrão da indústria.
+
+---
+
+## 🚧 Roadmap
+
+- [x] Asset Inventory
+- [x] CVSS Scoring
+- [x] PDF Reports
+- [ ] CVE Integration
+- [ ] NVD API Synchronization
+- [ ] Multi-Tenant Support
+- [ ] SSO Authentication
 
 ---
 
@@ -84,7 +174,7 @@ O **VulnTracker** é uma plataforma robusta e profissional desenvolvida para equ
 
 6. **Acesse a aplicação:**
    - **App**: `http://localhost:8000`
-   - **Mailpit (E-mails)**: `http://localhost:8025`
+   - **Mailpit (E-emails)**: `http://localhost:8025`
 
 ---
 
@@ -106,11 +196,13 @@ docker exec -it pgv_app php artisan test
 
 ---
 
-## 👨‍💻 Autor / Author
+## 👨‍💻 Author
+
 **Léo Walker da Silva**
-- Computer Science Student (UNEMAT)
-- Cybersecurity Enthusiast
-- English C2 Proficient
+Computer Science Student at UNEMAT
+
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/leowalker)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/leowalker)
 
 ---
 
